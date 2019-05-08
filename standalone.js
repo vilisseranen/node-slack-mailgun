@@ -11,6 +11,7 @@ var version = pkg.version;
 var hook = false;
 commander
   .version(version)
+  .option('-c, --channel [channel]', 'Which channel to post the message. Default: <#general>', '#general')
   .option('-p, --port [port]', 'Specify Port to Listen On. Default: <3000>', 3000)
   .option('-h, --hostname [ip]', 'Specify hostname to Listen On. Default: <0.0.0.0>')
   .option('-u, --url [url]', 'Specify URL Endpoint. Default: </>', '/')
@@ -46,7 +47,8 @@ app.use(commander.url, bodyParser.json({
 
 app.post(commander.url, slackgun({
   slack: {
-    hook: hook
+    hook: hook,
+    channel: commander.channel || '#general'
   },
   mailgun: {
     apikey: commander.apikey
